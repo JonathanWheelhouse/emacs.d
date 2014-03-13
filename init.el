@@ -1,12 +1,33 @@
+;;; package --- Summary
+; Jonno's linux emacs
+
 ;;; Commentary:
 
-;;; Code
+;;; Code:
 
 ;; Add the user-contributed repositories
 (require 'package)
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (package-initialize)
+
+;; installed packages
+;; ac-js2             20131112.403 installed  Auto-complete source for Js2-mode, with navigation
+;; angular-snippets   20131125.314 installed  Yasnippets for AngularJS
+;; auto-complete      20140127.632 installed  Auto Completion for GNU Emacs
+;; dash               20140121.427 installed  A modern list library for Emacs
+;; epl                20140102.211 installed  Emacs Package Library
+;; f                  20140128.... installed  Modern API for working with files and directories
+;; flycheck           20140130.... installed  On-the-fly syntax checking (Flymake done right)
+;; js2-mode           20140114     installed  Improved JavaScript editing mode
+;; multiple-cursors   20140105.259 installed  Multiple cursors for Emacs.
+;; pkg-info           20131101.408 installed  Information about packages
+;; popup              20140124.... installed  Visual Popup User Interface
+;; s                  20131223.944 installed  The long lost Emacs string manipulation library.
+;; simple-httpd       20140123.... installed  pure elisp HTTP server
+;; skewer-mode        20140123.... installed  live browser JavaScript, CSS, and HTML interaction
+;; smartparens        20140222.826 installed  Automatic insertion, wrapping and paredit-like navigation with user defined pairs.
+;; yasnippet          20140106.... installed  Yet another snippet extension for Emacs.
 
 (setq make-backup-files nil)
 
@@ -34,6 +55,10 @@
 
 ;; Don't wrap long lines.
 (set-default 'truncate-lines t)
+
+;; smartparens
+(smartparens-global-mode t)
+(require 'smartparens-config)
 
 ;; multiple-cursors
 (require 'multiple-cursors)
