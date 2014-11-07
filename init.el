@@ -47,9 +47,6 @@
 ;; replace the old buffer menu
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
-;; iswitch mode
-(iswitchb-mode)
-
 ;; S-left etc to move among windows
 (windmove-default-keybindings)
 
