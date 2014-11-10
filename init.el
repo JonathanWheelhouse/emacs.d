@@ -100,6 +100,14 @@
 (ido-mode 1) 
 (setq ido-use-filename-at-point 'guess) 
 
+;; smex
+(smex-initialize) ; Can be omitted. This might cause a (minimal) delay
+                  ; when Smex is auto-initialized on its first run.
+(global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "M-X") 'smex-major-mode-commands)
+;; This is your old M-x.
+(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
+
 (setq auto-mode-alist (append '(("\\.include$" . nxml-mode)) auto-mode-alist))
 (setq auto-mode-alist (append '(("\\.config$" . nxml-mode)) auto-mode-alist))
 (setq auto-mode-alist (append '( ("\\.build$" . nxml-mode)) auto-mode-alist))
