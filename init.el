@@ -47,7 +47,6 @@
 ;; replace the old buffer menu
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
-
 ;; toggle window split; switch from horizontal split to vertical split and vice-versa
 (defun toggle-window-split ()
   (interactive)
@@ -81,6 +80,9 @@
 
 ;; Don't wrap long lines.
 (set-default 'truncate-lines t)
+
+;; ace-jump-mode
+(define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
 
 ;; smartparens
 (smartparens-global-mode t)
