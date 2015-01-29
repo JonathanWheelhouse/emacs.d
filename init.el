@@ -42,7 +42,10 @@
 
 (setq frame-title-format "%b")
 (setq tab-width 4)
-(setq tab-stop-list '(4 8 12 16 20 24 28))
+;;; never use tabs for alignment
+(defadvice align-regexp (around align-regexp-with-spaces activate)
+  (let ((indent-tabs-mode nil))
+    ad-do-it))
 
 ;; replace the old buffer menu
 (global-set-key (kbd "C-x C-b") 'ibuffer)
@@ -102,6 +105,13 @@
 (ido-mode 1) 
 (setq ido-use-filename-at-point 'guess) 
 
+;; visual regexp
+(require 'visual-regexp)
+(define-key global-map (kbd "C-c r") 'vr/replace)
+(define-key global-map (kbd "C-c q") 'vr/query-replace)
+;; if you use multiple-cursors, this is for you:
+(define-key global-map (kbd "C-c m") 'vr/mc-mark)
+
 ;; smex
 (smex-initialize) ; Can be omitted. This might cause a (minimal) delay
                   ; when Smex is auto-initialized on its first run.
@@ -115,7 +125,6 @@
 (setq auto-mode-alist (append '( ("\\.build$" . nxml-mode)) auto-mode-alist))
 (setq auto-mode-alist (append '( ("\\.aspx$" . nxml-mode)) auto-mode-alist))
 
-(add-hook 'nxml-mode-hook 'turn-off-auto-fill)
 (add-hook 'nxml-mode-hook 'turn-off-auto-fill)
 
 ;; javascript-mode
@@ -170,12 +179,10 @@
  '(uniquify-buffer-name-style (quote forward) nil (uniquify)))
 
 (put 'scroll-left 'disabled nil)
-
 (put 'downcase-region 'disabled nil)
-
 (put 'upcase-region 'disabled nil)
-
 (put 'narrow-to-region 'disabled nil)
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
