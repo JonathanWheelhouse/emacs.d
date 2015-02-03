@@ -41,7 +41,7 @@
 (display-time)
 
 (setq frame-title-format "%b")
-(setq tab-width 4)
+(setq-default tab-width 4)
 (setq-default indent-tabs-mode nil)
 ;;; never use tabs for alignment
 (defadvice align-regexp (around align-regexp-with-spaces activate)
