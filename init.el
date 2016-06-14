@@ -185,7 +185,6 @@
 
 (use-package projectile
   :ensure t
-  :bind ("s-p" . projectile-command-map)
   :config
   (projectile-global-mode +1))
 
