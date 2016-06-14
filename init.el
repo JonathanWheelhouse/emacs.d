@@ -386,12 +386,4 @@
    (quote
     (csharp-mode visual-regexp json-mode js2-mode which-key aggressive-indent flycheck imenu-anywhere zop-to-char company markdown-mode smex flx-ido ido-ubiquitous rainbow-mode rainbow-delimiters move-text anzu multiple-cursors smartparens expand-region projectile magit avy material-theme use-package))))
 
-;; (custom-set-faces
-;;  ;; custom-set-faces was added by Custom.
-;;  ;; If you edit it by hand, you could mess it up, so be careful.
-;;  ;; Your init file should contain only one such instance.
-;;  ;; If there is more than one, they won't work right.
-;;  '(default ((t (:family "Inconsolata" :foundry "unknown" :slant normal :weight normal :height 120 :width normal)))))
-;;'(default ((t (:family "Consolas" :foundry "outline" :slant normal :weight normal :height 98 :width normal)))))
-
 ;;; init.el ends here
