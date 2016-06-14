@@ -11,11 +11,29 @@
 
 ;;; Code:
 
+;; windows only stuff
+(when (string-equal system-type "windows-nt")
+  (setq git-bin "C:\\Program Files\\Git\\usr\\bin")
+  (setenv "PATH" (concat git-bin ";" (getenv "PATH")))
+  (setq exec-path (append '(git-bin) exec-path)))
+
+;; proxy.asx.com.au : 8083
+;; use cntlm
+(when (string-equal system-type "windows-nt")
+  (setq url-proxy-services
+        '(("no_proxy" . "^\\(localhost\\|10.*\\)")
+          ("http" . "localhost:53128")
+          ("https" . "localhost:53128"))))
+
+(if (string-equal system-type "windows-nt")
+    (set-frame-font "-outline-Consolas-normal-r-normal-normal-14-97-96-96-c-*-iso8859-1")
+  (set-frame-font "Inconsolata-11"))
+
 ;; Add the user-contributed repositories
 (require 'package)
 (setq package-enable-at-startup nil)
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
-(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+;(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
 (package-initialize)
 
@@ -40,6 +58,8 @@
 (scroll-bar-mode nil)
 (when (fboundp 'tool-bar-mode)
   (tool-bar-mode -1))
+
+(savehist-mode 1)
 
 (put 'scroll-left 'disabled nil)
 (put 'downcase-region 'disabled nil)
@@ -111,7 +131,8 @@
         (forward-line))
       (open-line 1)
       (insert line-text))))
-(bind-key "C-x C-d" #'duplicate-line)
+(with-eval-after-load "use-package"
+  (bind-key "C-x C-d" #'duplicate-line))
 
 ;; Don't wrap long lines.
 (set-default 'truncate-lines t)
@@ -361,14 +382,16 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(canlock-password "ed58b26d973cc55ed62a41231cecab932ba6c707")
- )
+ '(package-selected-packages
+   (quote
+    (csharp-mode visual-regexp json-mode js2-mode which-key aggressive-indent flycheck imenu-anywhere zop-to-char company markdown-mode smex flx-ido ido-ubiquitous rainbow-mode rainbow-delimiters move-text anzu multiple-cursors smartparens expand-region projectile magit avy material-theme use-package))))
 
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:family "Inconsolata" :foundry "unknown" :slant normal :weight normal :height 120 :width normal)))))
+;; (custom-set-faces
+;;  ;; custom-set-faces was added by Custom.
+;;  ;; If you edit it by hand, you could mess it up, so be careful.
+;;  ;; Your init file should contain only one such instance.
+;;  ;; If there is more than one, they won't work right.
+;;  '(default ((t (:family "Inconsolata" :foundry "unknown" :slant normal :weight normal :height 120 :width normal)))))
+;;'(default ((t (:family "Consolas" :foundry "outline" :slant normal :weight normal :height 98 :width normal)))))
 
 ;;; init.el ends here
