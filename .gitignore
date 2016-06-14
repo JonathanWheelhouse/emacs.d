@@ -45,3 +45,9 @@ site-lisp/package/
 projectile-bookmarks.eld
 /semanticdb
 smex-items
+/abbrev_defs
+/bookmarks
+/places
+/projectile.cache
+server/
+/w32-registry.el
