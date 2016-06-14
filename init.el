@@ -13,6 +13,7 @@
 
 ;; windows only stuff
 (when (string-equal system-type "windows-nt")
+  (defvar git-bin)
   (setq git-bin "C:\\Program Files\\Git\\usr\\bin")
   (setenv "PATH" (concat git-bin ";" (getenv "PATH")))
   (setq exec-path (append '(git-bin) exec-path)))
@@ -20,6 +21,7 @@
 ;; proxy.asx.com.au : 8083
 ;; use cntlm
 (when (string-equal system-type "windows-nt")
+  (defvar url-proxy-services)
   (setq url-proxy-services
         '(("no_proxy" . "^\\(localhost\\|10.*\\)")
           ("http" . "localhost:53128")
