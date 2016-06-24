@@ -378,6 +378,22 @@
 (use-package org
   :mode (("\\.org$" . org-mode)))
 
+(use-package ag
+  :ensure t
+  :config
+  (setq ag-highlight-search t))
+
+(use-package popwin
+  :ensure t
+  :config
+  (popwin-mode 1))
+
+(use-package volatile-highlights
+  :ensure t
+  :diminish (volatile-highlights-mode . "")
+  :config
+  (volatile-highlights-mode t))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
