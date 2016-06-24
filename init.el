@@ -69,7 +69,9 @@
 (put 'narrow-to-region 'disabled nil)
 
 (setq-default indent-tabs-mode nil) ;; don't use tabs to indent
-(setq tab-width 4) ;; but maintain appearance
+(setq-default tab-width 4) ; or any other preferred value
+(defvaralias 'c-basic-offset 'tab-width)
+(defvaralias 'cperl-indent-level 'tab-width)
 ;;; never use tabs for alignment
 (defadvice align-regexp (around align-regexp-with-spaces activate)
   (let ((indent-tabs-mode nil))
@@ -170,7 +172,7 @@
   :ensure t
   :config
   (load-theme 'material t))
-;(load-theme 'wombat)
+                                        ;(load-theme 'wombat)
 
 (use-package avy
   :ensure t
@@ -197,8 +199,8 @@
   :config
   (smartparens-global-mode t)
   (require 'smartparens-config))
-;(add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)
-;(add-hook 'markdown-mode-hook 'turn-on-smartparens-strict-mode)
+                                        ;(add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)
+                                        ;(add-hook 'markdown-mode-hook 'turn-on-smartparens-strict-mode)
 
 (use-package paren
   :config
@@ -282,8 +284,7 @@
     (add-hook hook #'whitespace-mode))
   (add-hook 'before-save-hook #'whitespace-cleanup)
   :config
-  (setq whitespace-line-column 200) ;; limit line length
-  (setq whitespace-style '(face tabs empty trailing lines-tail)))
+  (setq whitespace-style '(face tabs empty trailing)))
 
 (use-package ido-ubiquitous
   :ensure t
@@ -298,11 +299,11 @@
   (setq ido-use-faces nil))
 
 ;; ido
-;(setq ido-enable-flex-matching t)
-;(setq ido-everywhere t)
-;(ido-mode 1)
-;(ido-vertical-mode 1)
-;(setq ido-use-filename-at-point 'guess)
+                                        ;(setq ido-enable-flex-matching t)
+                                        ;(setq ido-everywhere t)
+                                        ;(ido-mode 1)
+                                        ;(ido-vertical-mode 1)
+                                        ;(setq ido-use-filename-at-point 'guess)
 
 (use-package smex
   :ensure t
@@ -341,7 +342,7 @@
   (add-hook 'after-init-hook #'global-flycheck-mode))
 
 (use-package aggressive-indent
-  :ensure t
+  :disabled t
   :config
   (global-aggressive-indent-mode +1))
 
@@ -401,6 +402,6 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (csharp-mode visual-regexp json-mode js2-mode which-key aggressive-indent flycheck imenu-anywhere zop-to-char company markdown-mode smex flx-ido ido-ubiquitous rainbow-mode rainbow-delimiters move-text anzu multiple-cursors smartparens expand-region projectile magit avy material-theme use-package))))
+    (ag csharp-mode visual-regexp json-mode js2-mode which-key aggressive-indent flycheck imenu-anywhere zop-to-char company markdown-mode smex flx-ido ido-ubiquitous rainbow-mode rainbow-delimiters move-text anzu multiple-cursors smartparens expand-region projectile magit avy material-theme use-package))))
 
 ;;; init.el ends here
