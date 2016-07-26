@@ -19,13 +19,16 @@
   (setq exec-path (append '(git-bin) exec-path)))
 
 ;; proxy.asx.com.au : 8083
-;; use cntlm
+;; use cntlm or fiddler
 (when (string-equal system-type "windows-nt")
   (defvar url-proxy-services)
   (setq url-proxy-services
         '(("no_proxy" . "^\\(localhost\\|10.*\\)")
-          ("http" . "localhost:53128")
-          ("https" . "localhost:53128"))))
+          ;; ("http" . "localhost:53128") ; cntlm
+          ;; ("https" . "localhost:53128")))) ; cntlm
+          ("http" . "127.0.0.1:8888") ; fiddler
+          ("https" . "127.0.0.1:8888")))) ; fiddler
+
 
 (if (string-equal system-type "windows-nt")
     (set-frame-font "-outline-Consolas-normal-r-normal-normal-14-97-96-96-c-*-iso8859-1")
@@ -34,9 +37,7 @@
 ;; Add the user-contributed repositories
 (require 'package)
 (setq package-enable-at-startup nil)
-(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
-;(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
-(add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (package-initialize)
 
 ;; Always load newest byte code
@@ -405,3 +406,9 @@
     (ag csharp-mode visual-regexp json-mode js2-mode which-key aggressive-indent flycheck imenu-anywhere zop-to-char company markdown-mode smex flx-ido ido-ubiquitous rainbow-mode rainbow-delimiters move-text anzu multiple-cursors smartparens expand-region projectile magit avy material-theme use-package))))
 
 ;;; init.el ends here
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
