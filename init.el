@@ -287,6 +287,11 @@
   :config
   (setq whitespace-style '(face tabs empty trailing)))
 
+(use-package ido
+  :ensure t
+  :config
+  (ido-mode +1))
+
 (use-package ido-ubiquitous
   :ensure t
   :config
@@ -300,11 +305,11 @@
   (setq ido-use-faces nil))
 
 ;; ido
-                                        ;(setq ido-enable-flex-matching t)
-                                        ;(setq ido-everywhere t)
-                                        ;(ido-mode 1)
-                                        ;(ido-vertical-mode 1)
-                                        ;(setq ido-use-filename-at-point 'guess)
+;(setq ido-enable-flex-matching t)
+;(setq ido-everywhere t)
+;(ido-mode 1)
+;(ido-vertical-mode 1)
+;(setq ido-use-filename-at-point 'guess)
 
 (use-package smex
   :ensure t
