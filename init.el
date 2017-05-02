@@ -32,7 +32,7 @@
 
 (if (string-equal system-type "windows-nt")
     (set-frame-font "-outline-Consolas-normal-r-normal-normal-14-97-96-96-c-*-iso8859-1")
-  (set-frame-font "Inconsolata-11"))
+  (set-frame-font "Inconsolata-16"))
 
 ;; Add the user-contributed repositories
 (require 'package)
@@ -173,7 +173,7 @@
   :ensure t
   :config
   (load-theme 'material t))
-                                        ;(load-theme 'wombat)
+  ;(load-theme 'wombat)
 
 (use-package avy
   :ensure t
@@ -188,6 +188,7 @@
 
 (use-package projectile
   :ensure t
+  :diminish projectile-mode
   :config
   (projectile-global-mode +1))
 
@@ -197,6 +198,7 @@
 
 (use-package smartparens
   :ensure t
+  :diminish smartparens-mode
   :config
   (smartparens-global-mode t)
   (require 'smartparens-config))
@@ -208,6 +210,7 @@
   (show-paren-mode +1))
 
 (use-package abbrev
+  :diminish abbrev-mode
   :config
   (setq save-abbrevs 'silently)
   (setq-default abbrev-mode t))
@@ -272,14 +275,18 @@
    ([(meta shift down)] . move-text-down)))
 
 (use-package rainbow-delimiters
-  :ensure t)
+  :ensure t
+  :diminish rainbow-delimiters-mode
+)
 
 (use-package rainbow-mode
   :ensure t
+  :diminish rainbow-mode
   :config
   (add-hook 'prog-mode-hook #'rainbow-mode))
 
 (use-package whitespace
+  :diminish whitespace-mode
   :init
   (dolist (hook '(prog-mode-hook text-mode-hook))
     (add-hook hook #'whitespace-mode))
@@ -320,6 +327,7 @@
 
 (use-package company
   :ensure t
+  :diminish company-mode
   :config
   (global-company-mode))
 
@@ -334,6 +342,7 @@
          ("s-i" . imenu-anywhere)))
 
 (use-package flyspell
+  :diminish flyspell-mode
   :config
   (when (eq system-type 'windows-nt)
     (add-to-list 'exec-path "C:/Program Files (x86)/Aspell/bin/"))
@@ -344,6 +353,7 @@
 
 (use-package flycheck
   :ensure t
+  :diminish flycheck-mode
   :config
   (add-hook 'after-init-hook #'global-flycheck-mode))
 
@@ -354,6 +364,7 @@
 
 (use-package which-key
   :ensure t
+  :diminish which-key-mode
   :config
   (which-key-mode +1))
 
@@ -389,17 +400,6 @@
   :ensure t
   :config
   (setq ag-highlight-search t))
-
-(use-package popwin
-  :ensure t
-  :config
-  (popwin-mode 1))
-
-(use-package volatile-highlights
-  :ensure t
-  :diminish (volatile-highlights-mode . "")
-  :config
-  (volatile-highlights-mode t))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
