@@ -34,11 +34,22 @@
     (set-frame-font "-outline-Consolas-normal-r-normal-normal-14-97-96-96-c-*-iso8859-1")
   (set-frame-font "Inconsolata-16"))
 
-;; Add the user-contributed repositories
+;; Set up package sources
 (require 'package)
 (setq package-enable-at-startup nil)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (package-initialize)
+
+;; Bootstrap `use-package'
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
+(eval-when-compile
+  (require 'use-package))
+(require 'diminish)
+(require 'bind-key)
+(setq use-package-verbose t)
 
 ;; Always load newest byte code
 (setq load-prefer-newer t)
@@ -156,17 +167,6 @@
 ;; use hippie-expand instead of dabbrev
 (global-set-key (kbd "M-/") #'hippie-expand)
 (global-set-key (kbd "s-/") #'hippie-expand)
-
-;; Bootstrap `use-package'
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-
-(eval-when-compile
-  (require 'use-package))
-(require 'diminish)
-(require 'bind-key)
-(setq use-package-verbose t)
 
 ;; theme
 (use-package material-theme
@@ -393,9 +393,22 @@
   :ensure t
   :mode "\\.cs'")
 
+;; GNU Global
+;; tags for code navigation
+(use-package ggtags
+  :ensure t
+  :diminish ggtags-mode
+  :config
+  (add-hook 'c-mode-common-hook
+	    (lambda ()
+	      (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
+		(ggtags-mode 1))))
+  )
+
 (use-package org
   :mode (("\\.org$" . org-mode)))
 
+;; apt install silversearcher-ag
 (use-package ag
   :ensure t
   :config
@@ -408,7 +421,8 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (ag csharp-mode visual-regexp json-mode js2-mode which-key aggressive-indent flycheck imenu-anywhere zop-to-char company markdown-mode smex flx-ido ido-ubiquitous rainbow-mode rainbow-delimiters move-text anzu multiple-cursors smartparens expand-region projectile magit avy material-theme use-package))))
+    (ag csharp-mode visual-regexp json-mode js2-mode which-key aggressive-indent flycheck imenu-anywhere zop-to-char company markdown-mode smex flx-ido ido-ubiquitous rainbow-mode rainbow-delimiters move-text anzu multiple-cursors smartparens expand-region projectile magit avy material-theme use-package)))
+ '(send-mail-function (quote mailclient-send-it)))
 
 ;;; init.el ends here
 (custom-set-faces
