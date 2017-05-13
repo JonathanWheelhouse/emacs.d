@@ -357,11 +357,6 @@
   :config
   (add-hook 'after-init-hook #'global-flycheck-mode))
 
-(use-package aggressive-indent
-  :disabled t
-  :config
-  (global-aggressive-indent-mode +1))
-
 (use-package which-key
   :ensure t
   :diminish which-key-mode
