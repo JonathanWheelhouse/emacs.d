@@ -210,6 +210,7 @@
   (show-paren-mode +1))
 
 (use-package abbrev
+  :ensure t
   :diminish abbrev-mode
   :config
   (setq save-abbrevs 'silently)
@@ -294,29 +295,22 @@
   :config
   (setq whitespace-style '(face tabs empty trailing)))
 
-(use-package ido
+(use-package counsel
+  :ensure t)
+
+(use-package swiper
   :ensure t
   :config
-  (ido-mode +1))
-
-(use-package ido-ubiquitous
-  :ensure t
-  :config
-  (ido-ubiquitous-mode +1))
-
-(use-package flx-ido
-  :ensure t
-  :config
-  (flx-ido-mode +1)
-  ;; disable ido faces to see flx highlights
-  (setq ido-use-faces nil))
-
-;; ido
-;(setq ido-enable-flex-matching t)
-;(setq ido-everywhere t)
-;(ido-mode 1)
-;(ido-vertical-mode 1)
-;(setq ido-use-filename-at-point 'guess)
+  (progn
+    (ivy-mode 1)
+    (setq ivy-use-virtual-buffers t)
+    (setq enable-recursive-minibuffers t)
+    (global-set-key "\C-s" 'swiper)
+    (global-set-key (kbd "C-c C-r") 'ivy-resume)
+    (global-set-key (kbd "<f6>") 'ivy-resume)
+    (global-set-key (kbd "M-x") 'counsel-M-x)
+    (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+    ))
 
 (use-package smex
   :ensure t
@@ -416,7 +410,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (ag csharp-mode visual-regexp json-mode js2-mode which-key aggressive-indent flycheck imenu-anywhere zop-to-char company markdown-mode smex flx-ido ido-ubiquitous rainbow-mode rainbow-delimiters move-text anzu multiple-cursors smartparens expand-region projectile magit avy material-theme use-package)))
+    (counsel swiper ag csharp-mode visual-regexp json-mode js2-mode which-key aggressive-indent flycheck imenu-anywhere zop-to-char company markdown-mode smex ido-ubiquitous rainbow-mode rainbow-delimiters move-text anzu multiple-cursors smartparens expand-region projectile magit avy material-theme use-package)))
  '(send-mail-function (quote mailclient-send-it)))
 
 ;;; init.el ends here
