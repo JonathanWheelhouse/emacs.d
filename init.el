@@ -209,13 +209,6 @@
   :config
   (show-paren-mode +1))
 
-(use-package abbrev
-  :ensure t
-  :diminish abbrev-mode
-  :config
-  (setq save-abbrevs 'silently)
-  (setq-default abbrev-mode t))
-
 (use-package multiple-cursors
   :ensure t
   :bind (("C-S-c C-S-c" . mc/edit-lines)
@@ -410,7 +403,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (counsel swiper ag csharp-mode visual-regexp json-mode js2-mode which-key aggressive-indent flycheck imenu-anywhere zop-to-char company markdown-mode smex ido-ubiquitous rainbow-mode rainbow-delimiters move-text anzu multiple-cursors smartparens expand-region projectile magit avy material-theme use-package)))
+    (ggtags abbrev counsel swiper ag csharp-mode visual-regexp json-mode js2-mode which-key aggressive-indent flycheck imenu-anywhere zop-to-char company markdown-mode smex ido-ubiquitous rainbow-mode rainbow-delimiters move-text anzu multiple-cursors smartparens expand-region projectile magit avy material-theme use-package)))
  '(send-mail-function (quote mailclient-send-it)))
 
 ;;; init.el ends here
