@@ -175,6 +175,10 @@
   (load-theme 'material t))
   ;(load-theme 'wombat)
 
+(use-package ace-window
+  :ensure t
+  :bind("M-p" . ace-window))
+
 (use-package avy
   :ensure t
   :bind (("C-c j" . avy-goto-word-or-subword-1)
@@ -403,7 +407,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (ggtags abbrev counsel swiper ag csharp-mode visual-regexp json-mode js2-mode which-key aggressive-indent flycheck imenu-anywhere zop-to-char company markdown-mode smex ido-ubiquitous rainbow-mode rainbow-delimiters move-text anzu multiple-cursors smartparens expand-region projectile magit avy material-theme use-package)))
+    (ace-window ivy ggtags abbrev counsel swiper ag csharp-mode visual-regexp json-mode js2-mode which-key aggressive-indent flycheck imenu-anywhere zop-to-char company markdown-mode smex ido-ubiquitous rainbow-mode rainbow-delimiters move-text anzu multiple-cursors smartparens expand-region projectile magit avy material-theme use-package)))
  '(send-mail-function (quote mailclient-send-it)))
 
 ;;; init.el ends here
