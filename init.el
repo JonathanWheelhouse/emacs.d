@@ -1,4 +1,4 @@
-;;; init.el -- Jono's Emacs configuration
+|;;; init.el -- Jono's Emacs configuration
 
 ;; Copyright (c) 2016 Jonathan Wheelhouse
 
@@ -316,12 +316,6 @@
 (use-package markdown-mode
   :ensure t)
 
-(use-package company
-  :ensure t
-  :diminish company-mode
-  :config
-  (global-company-mode))
-
 (use-package zop-to-char
   :ensure t
   :bind (("M-z" . zop-up-to-char)
@@ -375,9 +369,44 @@
          ("C-c q" . vr/query-replace)
          ("C-c m" . vr/mc-mark)))
 
+;;; https://github.com/OmniSharp/omnisharp-roslyn/issues/919
+;;; 2017-09-19 Doesn't yet work because of a problem with mono; but fix for it; has to go to Debian
+;; Deferred HTTP to talk to Omnisharp
+(use-package request-deferred
+  :ensure t)
+
+;; Company for Completion
+(use-package company
+  :ensure t
+  :diminish company-mode
+  :config
+  (global-company-mode))
+
 (use-package csharp-mode
   :ensure t
-  :mode "\\.cs'")
+  :init (add-hook 'csharp-mode-hook 'omnisharp-mode)
+:mode "\\.cs")
+
+;; Omnisharp
+(use-package omnisharp
+  :after csharp-mode
+  :preface
+  (progn
+    (defun my/configure-omnisharp ()
+      (omnisharp-mode)
+      (add-to-list 'company-backends #'company-omnisharp)
+      (company-mode)
+      (local-set-key (kbd "C-c C-c") #'recompile)))
+  :init
+  (progn
+    (add-hook 'csharp-mode-hook #'my/configure-omnisharp))
+  :config
+  (progn
+    (bind-key "C-c r r" #'omnisharp-run-code-action-refactoring omnisharp-mode-map)))
+
+(use-package meson-mode
+  :ensure t
+  :mode "meson.build")
 
 ;; GNU Global
 ;; tags for code navigation
@@ -390,6 +419,9 @@
 	      (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
 		(ggtags-mode 1))))
   )
+
+(setq c-default-style "k&r"
+      c-basic-offset 4)
 
 (use-package org
   :mode (("\\.org$" . org-mode)))
@@ -407,8 +439,8 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (ace-window ivy ggtags abbrev counsel swiper ag csharp-mode visual-regexp json-mode js2-mode which-key aggressive-indent flycheck imenu-anywhere zop-to-char company markdown-mode smex ido-ubiquitous rainbow-mode rainbow-delimiters move-text anzu multiple-cursors smartparens expand-region projectile magit avy material-theme use-package)))
- '(send-mail-function (quote mailclient-send-it)))
+    (omnisharp request-deferred meson-mode solarized-theme ace-window ivy ggtags abbrev counsel swiper ag csharp-mode visual-regexp json-mode js2-mode which-key aggressive-indent flycheck imenu-anywhere zop-to-char company markdown-mode smex ido-ubiquitous rainbow-mode rainbow-delimiters move-text anzu multiple-cursors smartparens expand-region projectile magit avy material-theme use-package)))
+ '(safe-local-variable-values (quote ((bug-reference-bug-regexp . "#\\(?2:[0-9]+\\)")))))
 
 ;;; init.el ends here
 (custom-set-faces
