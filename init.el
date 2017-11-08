@@ -1,4 +1,4 @@
-|;;; init.el -- Jono's Emacs configuration
+;;; init.el -- Jono's Emacs configuration
 
 ;; Copyright (c) 2016 Jonathan Wheelhouse
 
