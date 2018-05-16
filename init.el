@@ -13,10 +13,8 @@
 
 ;; windows only stuff
 (when (string-equal system-type "windows-nt")
-  (defvar git-bin)
-  (setq git-bin "C:\\Program Files\\Git\\usr\\bin")
-  (setenv "PATH" (concat git-bin ";" (getenv "PATH")))
-  (setq exec-path (append '(git-bin) exec-path)))
+  (setenv "PATH" (concat "C:/Program Files/Git/usr/bin" ";" (getenv "PATH")))
+  (setq exec-path (append '("C:/Program Files/Git/usr/bin") exec-path)))
 
 ;; proxy.asx.com.au : 8083
 ;; use cntlm or fiddler
