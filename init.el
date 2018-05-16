@@ -192,7 +192,7 @@
   :ensure t
   :diminish projectile-mode
   :config
-  (projectile-global-mode +1))
+  (projectile-mode +1))
 
 (use-package expand-region
   :ensure t
