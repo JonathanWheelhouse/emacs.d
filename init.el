@@ -394,6 +394,7 @@
       (omnisharp-mode)
       (add-to-list 'company-backends #'company-omnisharp)
       (company-mode)
+      (local-set-key (kbd "M-.") #'omnisharp-go-to-definition)
       (local-set-key (kbd "C-c C-c") #'recompile)))
   :init
   (progn
