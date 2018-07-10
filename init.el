@@ -433,6 +433,10 @@
   :config
   (setq ag-highlight-search t))
 
+(use-package deadgrep
+  :ensure t
+  :bind("<f5>" . deadgrep))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -440,7 +444,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (yaml-mode diminish omnisharp request-deferred meson-mode solarized-theme ace-window ivy ggtags abbrev counsel swiper ag csharp-mode visual-regexp json-mode js2-mode which-key aggressive-indent flycheck imenu-anywhere zop-to-char company markdown-mode smex ido-ubiquitous rainbow-mode rainbow-delimiters move-text anzu multiple-cursors smartparens expand-region projectile magit avy material-theme use-package)))
+    (deadgrep yaml-mode diminish omnisharp request-deferred meson-mode solarized-theme ace-window ivy ggtags abbrev counsel swiper ag csharp-mode visual-regexp json-mode js2-mode which-key aggressive-indent flycheck imenu-anywhere zop-to-char company markdown-mode smex ido-ubiquitous rainbow-mode rainbow-delimiters move-text anzu multiple-cursors smartparens expand-region projectile magit avy material-theme use-package)))
  '(safe-local-variable-values (quote ((bug-reference-bug-regexp . "#\\(?2:[0-9]+\\)")))))
 
 ;;; init.el ends here
