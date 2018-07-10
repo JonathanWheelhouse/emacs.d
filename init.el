@@ -433,6 +433,7 @@
   :config
   (setq ag-highlight-search t))
 
+;; https://github.com/Wilfred/deadgrep
 (use-package deadgrep
   :ensure t
   :bind("<f5>" . deadgrep))
