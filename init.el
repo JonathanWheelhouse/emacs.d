@@ -405,6 +405,8 @@
   (progn
     (bind-key "C-c r r" #'omnisharp-run-code-action-refactoring omnisharp-mode-map)))
 
+;;(setq omnisharp-server-executable-path "D:\\software\\omnisharp-win-x86\\OmniSharp.exe")
+
 (use-package meson-mode
   :ensure t
   :mode "meson.build")
