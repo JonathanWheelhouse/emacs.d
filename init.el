@@ -330,7 +330,7 @@
   :diminish flyspell-mode
   :config
   (when (eq system-type 'windows-nt)
-    (add-to-list 'exec-path "d:/software/hunspell-1.3.2-3-w32-bin/bin"))
+    (add-to-list 'exec-path "p:/hunspell-1.3.2-3-w32-bin/bin"))
   (setq ispell-program-name "hunspell" ; use hunspell instead of ispell
         ispell-extra-args '("-d en_AU"))
   (add-hook 'text-mode-hook #'flyspell-mode)
