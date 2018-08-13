@@ -29,8 +29,10 @@
 
 
 (if (string-equal system-type "windows-nt")
-    (set-frame-font "-outline-Consolas-normal-r-normal-normal-14-97-96-96-c-*-iso8859-1")
-  (set-frame-font "Inconsolata-16"))
+    (progn
+      (set-frame-font "-outline-Consolas-normal-r-normal-normal-14-97-96-96-c-*-iso8859-1")
+      (add-to-list 'default-frame-alist '(font . "-outline-Consolas-normal-r-normal-normal-14-97-96-96-c-*-iso8859-1")))
+  (set-frame-font "Inconsolata-11"))
 
 ;; Set up package sources
 (require 'package)
