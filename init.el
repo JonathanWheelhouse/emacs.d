@@ -390,6 +390,7 @@
 
 ;; Omnisharp
 (use-package omnisharp
+  :ensure t
   :after csharp-mode
   :preface
   (progn
@@ -401,12 +402,13 @@
       (local-set-key (kbd "C-c C-c") #'recompile)))
   :init
   (progn
-    (add-hook 'csharp-mode-hook #'my/configure-omnisharp))
+    (add-hook 'csharp-mode-hook #'my/configure-omnisharp)
+    (if (string-equal system-type "windows-nt")
+        (setq omnisharp-server-executable-path "D:\\software\\omnisharp-win-x86\\OmniSharp.exe")
+      (setq omnisharp-server-executable-path "~/dev/omnisharp-linux-x64/run")))
   :config
   (progn
     (bind-key "C-c r r" #'omnisharp-run-code-action-refactoring omnisharp-mode-map)))
-
-;;(setq omnisharp-server-executable-path "D:\\software\\omnisharp-win-x86\\OmniSharp.exe")
 
 (use-package meson-mode
   :ensure t
