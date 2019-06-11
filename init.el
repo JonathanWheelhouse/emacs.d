@@ -404,8 +404,7 @@
   :init
   (progn
     (add-hook 'csharp-mode-hook #'my/configure-omnisharp)
-    (if (string-equal system-type "windows-nt")
-        (setq omnisharp-server-executable-path "D:\\software\\omnisharp-win-x86\\OmniSharp.exe")
+    (unless (string-equal system-type "windows-nt")
       (setq omnisharp-server-executable-path "~/dev/omnisharp-linux-x64/run")))
   :config
   (progn
