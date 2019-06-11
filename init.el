@@ -205,8 +205,9 @@
   :ensure t
   :diminish smartparens-mode
   :config
-  (smartparens-global-mode t)
-  (require 'smartparens-config))
+  (progn
+    (require 'smartparens-config)
+    (smartparens-global-mode t)))
 ;(add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)
 ;(add-hook 'markdown-mode-hook 'turn-on-smartparens-strict-mode)
 
@@ -437,6 +438,9 @@
   :ensure t
   :bind("<f5>" . deadgrep))
 
+(use-package yaml-mode
+  :ensure t
+  :mode "\\.json\\'")
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
