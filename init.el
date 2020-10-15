@@ -30,7 +30,7 @@
 
 (if (string-equal system-type "windows-nt")
     (set-frame-font "-outline-Consolas-normal-r-normal-normal-14-97-96-96-c-*-iso8859-1" nil t)
-  (set-frame-font "Inconsolata-11"))
+  (set-frame-font "Fira Code-14"))
 
 ;; Set up package sources
 (require 'package)
