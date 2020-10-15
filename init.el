@@ -45,16 +45,25 @@
           ("http" . "127.0.0.1:8888") ; fiddler
           ("https" . "127.0.0.1:8888")))) ; fiddler
 
+;; set default font
+(cond
+ ((string-equal system-type "windows-nt") ; Microsoft Windows
+  (when (member "Consolas" (font-family-list))
+    (set-frame-font "Consolas" t t)))
+ ((string-equal system-type "darwin") ; macOS
+  (when (member "Menlo" (font-family-list))
+    (set-frame-font "Menlo" t t)))
+ ((string-equal system-type "gnu/linux") ; linux
+  (when (member "Inconsolata" (font-family-list))
+                                        ;    (set-frame-font "Inconsolata" t t))))
+    (set-frame-font "Fira Code" t t))))
 
-(if (string-equal system-type "windows-nt")
-    (set-frame-font "-outline-Consolas-normal-r-normal-normal-14-97-96-96-c-*-iso8859-1" nil t)
-  (set-frame-font "Fira Code-14"))
 
 ;; Set up package sources
 (require 'package)
-(setq package-enable-at-startup nil)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
-(package-initialize)
+(when (< emacs-major-version 27)
+  (package-initialize))
 
 ;; Bootstrap `use-package'
 (unless (package-installed-p 'use-package)
@@ -65,12 +74,11 @@
 (use-package auto-package-update
   :ensure t
   :config
-  (setq
-   auto-package-update-delete-old-verions t
-   auto-package-update-interval 5
-   )
-  (auto-package-update-maybe)
-  )
+  (setq auto-package-update-prompt-before-update t)
+  (setq auto-package-update-interval 5)
+  (setq auto-package-update-delete-old-versions t)
+  (setq auto-package-update-hide-results t)
+  (auto-package-update-maybe))
 
 (eval-when-compile
   (require 'use-package))
@@ -138,26 +146,26 @@
   (interactive)
   (if (= (count-windows) 2)
       (let* ((this-win-buffer (window-buffer))
-	     (next-win-buffer (window-buffer (next-window)))
-	     (this-win-edges (window-edges (selected-window)))
-	     (next-win-edges (window-edges (next-window)))
-	     (this-win-2nd (not (and (<= (car this-win-edges)
-					 (car next-win-edges))
-				     (<= (cadr this-win-edges)
-					 (cadr next-win-edges)))))
-	     (splitter
-	      (if (= (car this-win-edges)
-		     (car (window-edges (next-window))))
-		  'split-window-horizontally
-		'split-window-vertically)))
-	(delete-other-windows)
-	(let ((first-win (selected-window)))
-	  (funcall splitter)
-	  (if this-win-2nd (other-window 1))
-	  (set-window-buffer (selected-window) this-win-buffer)
-	  (set-window-buffer (next-window) next-win-buffer)
-	  (select-window first-win)
-	  (if this-win-2nd (other-window 1))))))
+             (next-win-buffer (window-buffer (next-window)))
+             (this-win-edges (window-edges (selected-window)))
+             (next-win-edges (window-edges (next-window)))
+             (this-win-2nd (not (and (<= (car this-win-edges)
+                                         (car next-win-edges))
+                                     (<= (cadr this-win-edges)
+                                         (cadr next-win-edges)))))
+             (splitter
+              (if (= (car this-win-edges)
+                     (car (window-edges (next-window))))
+                  'split-window-horizontally
+                'split-window-vertically)))
+        (delete-other-windows)
+        (let ((first-win (selected-window)))
+          (funcall splitter)
+          (if this-win-2nd (other-window 1))
+          (set-window-buffer (selected-window) this-win-buffer)
+          (set-window-buffer (next-window) next-win-buffer)
+          (select-window first-win)
+          (if this-win-2nd (other-window 1))))))
 (define-key ctl-x-4-map "t" 'toggle-window-split)
 
 (defun duplicate-line ()
@@ -200,7 +208,7 @@
   :ensure t
   :config
   (load-theme 'material t))
-  ;(load-theme 'wombat)
+                                        ;(load-theme 'wombat)
 
 (use-package windmove
   :config
@@ -242,8 +250,8 @@
   (progn
     (require 'smartparens-config)
     (smartparens-global-mode t)))
-;(add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)
-;(add-hook 'markdown-mode-hook 'turn-on-smartparens-strict-mode)
+                                        ;(add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)
+                                        ;(add-hook 'markdown-mode-hook 'turn-on-smartparens-strict-mode)
 
 (use-package paren
   :config
@@ -306,7 +314,7 @@
 (use-package rainbow-delimiters
   :ensure t
   :diminish rainbow-delimiters-mode
-)
+  )
 
 (use-package rainbow-mode
   :ensure t
@@ -410,7 +418,7 @@
 (use-package csharp-mode
   :ensure t
   :init (add-hook 'csharp-mode-hook 'omnisharp-mode)
-:mode "\\.cs")
+  :mode "\\.cs")
 
 ;; Omnisharp
 (use-package omnisharp
@@ -444,9 +452,9 @@
   :diminish ggtags-mode
   :config
   (add-hook 'c-mode-common-hook
-	    (lambda ()
-	      (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
-		(ggtags-mode 1))))
+            (lambda ()
+              (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
+                (ggtags-mode 1))))
   )
 
 (setq c-default-style "k&r"
