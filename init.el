@@ -11,6 +11,24 @@
 
 ;;; Code:
 
+;; Edit configuration
+(defun config-visit ()
+  "Edit config.org."
+  (interactive)
+  (find-file "~/.emacs.d/init.el" )
+  )
+(global-set-key (kbd "C-c e") 'config-visit)
+
+;; Reload configuration
+(defun config-reload ()
+  "Reload config.org at runtime."
+  (interactive)
+  (when (file-readable-p "~/.emacs.d/init.el")
+    (load-file (expand-file-name "~/.emacs.d/init.el" ))
+    )
+  )
+(global-set-key (kbd "C-c r") 'config-reload)
+
 ;; windows only stuff
 (when (string-equal system-type "windows-nt")
   (setenv "PATH" (concat "C:/Program Files/Git/usr/bin" ";" (getenv "PATH")))
