@@ -1,6 +1,6 @@
 ;;; init.el -- Jono's Emacs configuration
 
-;; Copyright (c) 2016 Jonathan Wheelhouse
+;; Copyright (c) 2020 Jonathan Wheelhouse
 
 ;; Author: Jonathan Wheelhouse <jonathan.wheelhouse@gmail.com>
 ;; URL: https://github.com/JonathanWheelhouse/emacs-config
