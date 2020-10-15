@@ -202,6 +202,11 @@
   (load-theme 'material t))
   ;(load-theme 'wombat)
 
+(use-package windmove
+  :config
+  ;; use shift + arrow keys to switch between visible buffers
+  (windmove-default-keybindings))
+
 (use-package ace-window
   :ensure t
   :bind("M-p" . ace-window))
@@ -268,11 +273,6 @@
         ;; problems with remote files
         recentf-auto-cleanup 'never)
   (recentf-mode +1))
-
-(use-package windmove
-  :config
-  ;; use shift + arrow keys to switch between visible buffers
-  (windmove-default-keybindings))
 
 (use-package dired
   :config
