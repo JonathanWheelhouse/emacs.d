@@ -376,12 +376,6 @@
   :config
   (turn-off-auto-fill))
 
-(use-package visual-regexp
-  :ensure t
-  :bind (("C-c r" . vr/replace)
-         ("C-c q" . vr/query-replace)
-         ("C-c m" . vr/mc-mark)))
-
 ;;; https://github.com/OmniSharp/omnisharp-roslyn/issues/919
 ;;; 2017-09-19 Doesn't yet work because of a problem with mono; but fix for it; has to go to Debian
 ;; Deferred HTTP to talk to Omnisharp
