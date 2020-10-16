@@ -115,14 +115,11 @@
 (put 'upcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
 
+;; tabs
 (setq-default indent-tabs-mode nil) ;; don't use tabs to indent
 (setq-default tab-width 4) ; or any other preferred value
 (defvaralias 'c-basic-offset 'tab-width)
 (defvaralias 'cperl-indent-level 'tab-width)
-;;; never use tabs for alignment
-(defadvice align-regexp (around align-regexp-with-spaces activate)
-  (let ((indent-tabs-mode nil))
-    ad-do-it))
 
 ;; Newline at end of file
 (setq require-final-newline t)
@@ -456,9 +453,6 @@
               (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
                 (ggtags-mode 1))))
   )
-
-(setq c-default-style "k&r"
-      c-basic-offset 4)
 
 (use-package org
   :mode (("\\.org$" . org-mode)))
