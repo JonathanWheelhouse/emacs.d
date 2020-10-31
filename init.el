@@ -200,6 +200,11 @@
 (global-set-key (kbd "M-/") #'hippie-expand)
 (global-set-key (kbd "s-/") #'hippie-expand)
 
+;; Hide minor modes
+(use-package diminish
+  :ensure t
+  )
+
 ;; theme
 (use-package material-theme
   :ensure t
