@@ -471,16 +471,3 @@
   :mode "\\.json\\'")
 
 ;;; init.el ends here
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(zop-to-char yaml-mode which-key visual-regexp use-package solarized-theme smex smartparens request-deferred rainbow-mode rainbow-delimiters projectile omnisharp multiple-cursors move-text meson-mode material-theme markdown-mode magit json-mode js2-mode imenu-anywhere ggtags expand-region diminish deadgrep counsel company auto-package-update anzu ace-window)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
