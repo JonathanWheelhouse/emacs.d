@@ -284,6 +284,17 @@
   (recentf-mode +1))
 
 (use-package dired
+  :ensure nil
+
+  ;; Dired listing switches
+  ;;  -a : Do not ignore entries starting with .
+  ;;  -l : Use long listing format.
+  ;;  -G : Do not print group names like 'users'
+  ;;  -h : Human-readable sizes like 1K, 234M, ..
+  ;;  -v : Do natural sort .. so the file names starting with . will show up first.
+  ;;  -F : Classify filenames by appending '*' to executables,
+  ;;       '/' to directories, etc.
+  :custom ((dired-listing-switches "-aho --group-directories-first"))
   :config
   ;; dired - reuse current buffer by pressing 'a'
   (put 'dired-find-alternate-file 'disabled nil)
