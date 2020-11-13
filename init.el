@@ -343,26 +343,38 @@
   :config
   (setq whitespace-style '(face tabs empty trailing)))
 
+;; completion framework
+;; counsel and swiper depend on it
+(use-package ivy
+  :ensure t
+  :diminish
+  :custom
+  (ivy-count-format "(%d/%d) ")
+  (ivy-use-virtual-buffers t)
+  :config
+  (ivy-mode 1))
+
 (use-package counsel
-  :ensure t)
+  :ensure t
+  :after ivy
+  :bind (("C-x C-f" . counsel-find-file)
+         ("C-h f"   . counsel-describe-function)
+         ("C-h v"   . counsel-describe-variable)
+         ("M-x"     . counsel-M-x)
+         ("M-y"     . counsel-yank-pop)))
 
 (use-package swiper
+  :after ivy
   :ensure t
   :config
   (progn
-    (ivy-mode 1)
-    (setq ivy-use-virtual-buffers t)
-    (setq enable-recursive-minibuffers t)
     (global-set-key "\C-s" 'swiper)
     (global-set-key (kbd "C-c C-r") 'ivy-resume)
     (global-set-key (kbd "<f6>") 'ivy-resume)
-    (global-set-key (kbd "M-x") 'counsel-M-x)
-    (global-set-key (kbd "C-x C-f") 'counsel-find-file)
     ))
 
 (use-package smex
-  :ensure t
-  :bind ("M-x" . smex))
+  :ensure t)
 
 (use-package markdown-mode
   :ensure t)
