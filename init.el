@@ -436,6 +436,7 @@
 (use-package company
   :ensure t
   :diminish company-mode
+  :bind ("TAB" . company-indent-or-complete-common)
   :config
   (global-company-mode))
 
