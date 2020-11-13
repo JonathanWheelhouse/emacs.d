@@ -95,10 +95,6 @@
 ;; disable startup screen
 (setq inhibit-startup-screen t)
 
-;; display time and date
-(setq display-time-day-and-date 't)
-(display-time-mode t)
-
 ;; mode line settings
 (line-number-mode t)
 (column-number-mode t)
