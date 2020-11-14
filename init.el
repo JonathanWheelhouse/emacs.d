@@ -348,6 +348,10 @@
   :config
   (ivy-mode 1))
 
+(use-package ivy-rich
+  :ensure t
+  :config (ivy-rich-mode 1))
+
 (use-package counsel
   :ensure t
   :after ivy
