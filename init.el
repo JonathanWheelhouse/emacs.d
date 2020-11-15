@@ -359,6 +359,7 @@
          ("C-h f"   . counsel-describe-function)
          ("C-h v"   . counsel-describe-variable)
          ("M-x"     . counsel-M-x)
+         ("C-x b"   . counsel-ibuffer)
          ("M-y"     . counsel-yank-pop)))
 
 (use-package swiper
