@@ -62,6 +62,7 @@
 ;; Set up package sources
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+
 (when (< emacs-major-version 27)
   (package-initialize))
 
@@ -197,8 +198,7 @@
 
 ;; Hide minor modes
 (use-package diminish
-  :ensure t
-  )
+  :ensure t)
 
 ;; theme
 (use-package material-theme
