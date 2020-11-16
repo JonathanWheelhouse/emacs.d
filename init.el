@@ -205,11 +205,11 @@
   :ensure t
   :config
   (load-theme 'material t))
-                                        ;(load-theme 'wombat)
+; (load-theme 'wombat)
 
+;; use shift + arrow keys to switch between visible buffers
 (use-package windmove
   :config
-  ;; use shift + arrow keys to switch between visible buffers
   (windmove-default-keybindings))
 
 (use-package ace-window
@@ -230,7 +230,6 @@
 (use-package projectile
   :ensure t
   :bind-keymap ("C-c p" . projectile-command-map)
-  :diminish
   :config
   (projectile-mode +1))
 
@@ -240,7 +239,6 @@
 
 (use-package smartparens
   :ensure t
-  :diminish
   :config
   (progn
     (require 'smartparens-config)
@@ -318,18 +316,14 @@
    ([(meta shift down)] . move-text-down)))
 
 (use-package rainbow-delimiters
-  :ensure t
-  :diminish
-  )
+  :ensure t)
 
 (use-package rainbow-mode
   :ensure t
-  :diminish
   :config
   (add-hook 'prog-mode-hook #'rainbow-mode))
 
 (use-package whitespace
-  :diminish
   :init
   (dolist (hook '(prog-mode-hook text-mode-hook))
     (add-hook hook #'whitespace-mode))
@@ -341,7 +335,6 @@
 ;; counsel and swiper depend on it
 (use-package ivy
   :ensure t
-  :diminish
   :custom
   (ivy-count-format "(%d/%d) ")
   (ivy-use-virtual-buffers t)
@@ -389,7 +382,6 @@
          ("s-i" . imenu-anywhere)))
 
 (use-package flyspell
-  :diminish
   :config
   (when (eq system-type 'windows-nt)
     (add-to-list 'exec-path "p:/hunspell-1.3.2-3-w32-bin/bin"))
@@ -400,13 +392,11 @@
 
 (use-package flycheck
   :ensure t
-  :diminish
   :config
   (add-hook 'after-init-hook #'global-flycheck-mode))
 
 (use-package which-key
   :ensure t
-  :diminish
   :config
   (which-key-mode +1))
 
@@ -434,7 +424,6 @@
 ;; Company for Completion
 (use-package company
   :ensure t
-  :diminish
   :bind ("TAB" . company-indent-or-complete-common)
   :config
   (global-company-mode))
@@ -473,7 +462,6 @@
 ;; tags for code navigation
 (use-package ggtags
   :ensure t
-  :diminish
   :config
   (add-hook 'c-mode-common-hook
             (lambda ()
