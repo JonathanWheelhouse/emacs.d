@@ -250,6 +250,12 @@
   :config
   (show-paren-mode +1))
 
+(use-package evil
+  :ensure t
+  :commands evil-mode)
+
+(global-set-key (kbd "C-z") 'evil-mode)
+
 (use-package multiple-cursors
   :ensure t
   :bind (("C-S-c C-S-c" . mc/edit-lines)
