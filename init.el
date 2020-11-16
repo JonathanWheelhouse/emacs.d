@@ -415,44 +415,49 @@
   :config
   (turn-off-auto-fill))
 
-;;; https://github.com/OmniSharp/omnisharp-roslyn/issues/919
-;;; 2017-09-19 Doesn't yet work because of a problem with mono; but fix for it; has to go to Debian
-;; Deferred HTTP to talk to Omnisharp
-(use-package request-deferred
-  :ensure t)
+;; lsp & omnisharp
+(defun efs/lsp-mode-setup ()
+  (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
+  (lsp-headerline-breadcrumb-mode))
 
-;; Company for Completion
-(use-package company
+(use-package lsp-mode
   :ensure t
-  :bind ("TAB" . company-indent-or-complete-common)
+  :commands (lsp lsp-deferred)
+  :hook (lsp-mode . efs/lsp-mode-setup)
+  :init
+  (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
   :config
-  (global-company-mode))
+  (lsp-enable-which-key-integration t))
+
+(use-package lsp-ui
+  :ensure t
+  :hook (lsp-mode . lsp-ui-mode)
+  :custom
+  (lsp-ui-doc-position 'bottom))
+
+(use-package lsp-treemacs
+  :ensure t
+  :after lsp)
+
+(use-package lsp-ivy
+  :ensure t)
 
 (use-package csharp-mode
   :ensure t
-  :init (add-hook 'csharp-mode-hook 'omnisharp-mode)
+  :init (add-hook 'csharp-mode-hook 'lsp-deferred)
   :mode "\\.cs")
 
-;; Omnisharp
-(use-package omnisharp
+(use-package company
   :ensure t
-  :after csharp-mode
-  :preface
-  (progn
-    (defun my/configure-omnisharp ()
-      (omnisharp-mode)
-      (add-to-list 'company-backends #'company-omnisharp)
-      (company-mode)
-      (local-set-key (kbd "M-.") #'omnisharp-go-to-definition)
-      (local-set-key (kbd "C-c C-c") #'recompile)))
-  :init
-  (progn
-    (add-hook 'csharp-mode-hook #'my/configure-omnisharp)
-    (unless (string-equal system-type "windows-nt")
-      (setq omnisharp-server-executable-path "~/dev/omnisharp-linux-x64/run")))
-  :config
-  (progn
-    (bind-key "C-c r r" #'omnisharp-run-code-action-refactoring omnisharp-mode-map)))
+  :after lsp-mode
+  :hook (lsp-mode . company-mode)
+  :bind (:map company-active-map
+         ("<tab>" . company-complete-selection))
+        (:map lsp-mode-map
+         ("<tab>" . company-indent-or-complete-common))
+  :custom
+  (company-minimum-prefix-length 1)
+  (company-idle-delay 0.0))
 
 (use-package meson-mode
   :ensure t
