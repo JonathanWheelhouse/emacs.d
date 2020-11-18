@@ -58,7 +58,6 @@
                                         ;    (set-frame-font "Inconsolata" t t))))
     (set-frame-font "Fira Code" t t))))
 
-
 ;; Set up package sources
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
@@ -131,8 +130,9 @@
 ;; enable y/n answers
 (fset 'yes-or-no-p 'y-or-n-p)
 
-;; replace the old buffer menu
-(global-set-key (kbd "C-x C-b") #'ibuffer)
+
+(use-package ibuffer
+  :bind ("C-x C-b" . ibuffer))
 
 (defun toggle-window-split ()
   "Toggle window split; switch from horizontal split to vertical split and vice-versa."
