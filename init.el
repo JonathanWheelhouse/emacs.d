@@ -480,6 +480,12 @@
                 (ggtags-mode 1))))
   )
 
+(use-package cc-mode
+  :ensure nil
+  :custom
+  (c-default-style "k&r")
+  (c-basic-offset 4))
+
 (use-package org
   :mode (("\\.org$" . org-mode)))
 
