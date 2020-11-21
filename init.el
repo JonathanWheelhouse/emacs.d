@@ -423,6 +423,7 @@
 
 ;; lsp & omnisharp
 (defun efs/lsp-mode-setup ()
+  "Customise lsp mode for csharp."
   (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
   (lsp-headerline-breadcrumb-mode))
 
@@ -481,6 +482,7 @@
   )
 
 (defun my-c-mode-hook ()
+  "C mode customisations."
   (c-set-style "linux")
   (setq c-basic-offset 4))
 
