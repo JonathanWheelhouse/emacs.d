@@ -480,11 +480,12 @@
                 (ggtags-mode 1))))
   )
 
+(defun my-c-mode-hook ()
+  (c-set-style "linux")
+  (setq c-basic-offset 4))
+
 (use-package cc-mode
-  :ensure nil
-  :custom
-  (c-default-style "k&r")
-  (c-basic-offset 4))
+  :hook (c-mode . my-c-mode-hook))
 
 (use-package org
   :mode (("\\.org$" . org-mode)))
