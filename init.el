@@ -284,7 +284,7 @@
 (use-package dired
   :ensure nil
 
-  ;; Dired listing switches
+  ;; Dired listing switches; don't work for windows
   ;;  -a : Do not ignore entries starting with .
   ;;  -l : Use long listing format.
   ;;  -G : Do not print group names like 'users'
@@ -292,14 +292,16 @@
   ;;  -v : Do natural sort .. so the file names starting with . will show up first.
   ;;  -F : Classify filenames by appending '*' to executables,
   ;;       '/' to directories, etc.
-  :custom ((dired-listing-switches "-aho --group-directories-first"))
   :config
+  (if (string-equal system-type "gnu/linux")
+      (setq dired-listing-switches "-aho --group-directories-first"))
   ;; dired - reuse current buffer by pressing 'a'
   (put 'dired-find-alternate-file 'disabled nil)
 
   ;; always delete and copy recursively
   (setq dired-recursive-deletes 'always)
   (setq dired-recursive-copies 'always)
+  (setq ls-lisp-dirs-first t)
 
   ;; if there is a dired buffer displayed in the next window, use its
   ;; current subdir, instead of the current subdir of this dired buffer
