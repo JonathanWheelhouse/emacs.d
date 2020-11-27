@@ -130,6 +130,15 @@
 ;; enable y/n answers
 (fset 'yes-or-no-p 'y-or-n-p)
 
+;; eye candy
+;; 1st time, after all the icons, run
+;; M-x all-the-icons-install-fonts
+(use-package all-the-icons
+  :ensure t)
+
+(use-package doom-modeline
+  :ensure t
+  :init (doom-modeline-mode 1))
 
 (use-package ibuffer
   :bind ("C-x C-b" . ibuffer))
