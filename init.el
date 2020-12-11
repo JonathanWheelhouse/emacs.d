@@ -234,7 +234,7 @@
 
 (use-package magit
   :ensure t
-  :bind (("C-x g" . magit-status)))
+  :bind (("C-c g" . magit-file-dispatch)))
 
 (use-package projectile
   :ensure t
