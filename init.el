@@ -319,6 +319,10 @@
   ;; enable some really cool extensions like C-x C-j(dired-jump)
   (require 'dired-x))
 
+(use-package all-the-icons-dired
+  :ensure t
+  :hook (dired-mode . all-the-icons-dired-mode))
+
 (use-package anzu
   :ensure t
   :bind (("M-%" . anzu-query-replace)
