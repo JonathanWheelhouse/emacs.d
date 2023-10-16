@@ -11,6 +11,10 @@
 
 ;;; Code:
 
+;; Performance tweaks for modern machines
+(setq gc-cons-threshold 100000000) ; 100 mb
+(setq read-process-output-max (* 1024 1024)) ; 1mb
+
 ;; Edit configuration
 (defun config-visit ()
   "Edit config.org."
@@ -32,7 +36,9 @@
 ;; windows only stuff
 (when (string-equal system-type "windows-nt")
   (setenv "PATH" (concat "C:/Program Files/Git/bin" ";" (getenv "PATH")))
-  (setq exec-path (append '("C:/Program Files/Git/bin") exec-path)))
+  (setq exec-path (append '("C:/Program Files/Git/bin") exec-path))
+  (setenv "PATH" (concat "C:/Program Files/Git/usr/bin" ";" (getenv "PATH")))
+  (setq exec-path (append '("C:/Program Files/Git/usr/bin") exec-path)))
 
 ;; proxy.asx.com.au : 8083
 ;; use cntlm or fiddler
@@ -45,30 +51,16 @@
           ("http" . "127.0.0.1:8888") ; fiddler
           ("https" . "127.0.0.1:8888")))) ; fiddler
 
-;; set default font
-(cond
- ((string-equal system-type "windows-nt") ; Microsoft Windows
-  (when (member "Consolas" (font-family-list))
-    (set-frame-font "Consolas" t t)))
- ((string-equal system-type "darwin") ; macOS
-  (when (member "Menlo" (font-family-list))
-    (set-frame-font "Menlo" t t)))
- ((string-equal system-type "gnu/linux") ; linux
-  (when (member "Inconsolata" (font-family-list))
-    ;(set-frame-font "Inconsolata" t t))))
-    (set-frame-font "Fira Code" t t))))
+;; Set the font. Note: height = px * 100
+(set-face-attribute 'default nil :font "Consolas" :height 120)
 
 ;; Set up package sources
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 
-(when (< emacs-major-version 27)
-  (package-initialize))
+(setq use-package-enable-imenu-support t)
 
-;; Bootstrap `use-package'
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
+(package-initialize)
 
 ;; Configure package updates
 (use-package auto-package-update
@@ -96,14 +88,17 @@
 (setq inhibit-startup-screen t)
 
 ;; mode line settings
-(line-number-mode t)
+(add-hook 'prog-mode-hook 'display-line-numbers-mode)
 (column-number-mode t)
 (size-indication-mode t)
-(scroll-bar-mode nil)
-(when (fboundp 'tool-bar-mode)
-  (tool-bar-mode -1))
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
 
-(savehist-mode 1)
+;; Persist history over Emacs restarts. Vertico sorts by history position.
+(use-package savehist
+  :ensure t
+  :init
+  (savehist-mode))
 
 (put 'scroll-left 'disabled nil)
 (put 'downcase-region 'disabled nil)
@@ -113,11 +108,10 @@
 ;; tabs
 (setq-default indent-tabs-mode nil) ;; don't use tabs to indent
 (setq-default tab-width 4) ; or any other preferred value
-(defvaralias 'c-basic-offset 'tab-width)
-(defvaralias 'cperl-indent-level 'tab-width)
 
-;; Newline at end of file
-(setq require-final-newline t)
+(set-default 'truncate-lines t) ;; Don't wrap long lines.
+
+(setq require-final-newline t) ;; Newline at end of file
 
 ;; revert buffers automatically when underlying files are changed externally
 (global-auto-revert-mode t)
@@ -131,11 +125,16 @@
 (fset 'yes-or-no-p 'y-or-n-p)
 
 ;; eye candy
-;; 1st time, after all the icons, run
+;; 1st time
 ;; M-x all-the-icons-install-fonts
+;; Then install those icons on Windows by double clicking and choosing install
 (use-package all-the-icons
   :ensure t)
 
+;; eye candy
+;; 1st time
+;; Run M-x nerd-icons-install-fonts
+;; Then install those icons on Windows by double clicking and choosing install
 (use-package doom-modeline
   :ensure t
   :init (doom-modeline-mode 1))
@@ -143,78 +142,18 @@
 (use-package ibuffer
   :bind ("C-x C-b" . ibuffer))
 
-(defun toggle-window-split ()
-  "Toggle window split; switch from horizontal split to vertical split and vice-versa."
-  (interactive)
-  (if (= (count-windows) 2)
-      (let* ((this-win-buffer (window-buffer))
-             (next-win-buffer (window-buffer (next-window)))
-             (this-win-edges (window-edges (selected-window)))
-             (next-win-edges (window-edges (next-window)))
-             (this-win-2nd (not (and (<= (car this-win-edges)
-                                         (car next-win-edges))
-                                     (<= (cadr this-win-edges)
-                                         (cadr next-win-edges)))))
-             (splitter
-              (if (= (car this-win-edges)
-                     (car (window-edges (next-window))))
-                  'split-window-horizontally
-                'split-window-vertically)))
-        (delete-other-windows)
-        (let ((first-win (selected-window)))
-          (funcall splitter)
-          (if this-win-2nd (other-window 1))
-          (set-window-buffer (selected-window) this-win-buffer)
-          (set-window-buffer (next-window) next-win-buffer)
-          (select-window first-win)
-          (if this-win-2nd (other-window 1))))))
-(define-key ctl-x-4-map "t" 'toggle-window-split)
-
-(defun duplicate-line ()
-  "Duplicate the line containing point."
-  (interactive)
-  (save-excursion
-    (let (line-text)
-      (goto-char (line-beginning-position))
-      (let ((beg (point)))
-        (goto-char (line-end-position))
-        (setq line-text (buffer-substring beg (point))))
-      (if (eobp)
-          (insert ?\n)
-        (forward-line))
-      (open-line 1)
-      (insert line-text))))
-(with-eval-after-load "use-package"
-  (bind-key "C-x C-d" #'duplicate-line))
-
-;; Don't wrap long lines.
-(set-default 'truncate-lines t)
-
-;; hippie expand is dabbrev expand on steroids
-(setq hippie-expand-try-functions-list '(try-expand-dabbrev
-                                         try-expand-dabbrev-all-buffers
-                                         try-expand-dabbrev-from-kill
-                                         try-complete-file-name-partially
-                                         try-complete-file-name
-                                         try-expand-all-abbrevs
-                                         try-expand-list
-                                         try-expand-line
-                                         try-complete-lisp-symbol-partially
-                                         try-complete-lisp-symbol))
-;; use hippie-expand instead of dabbrev
-(global-set-key (kbd "M-/") #'hippie-expand)
-(global-set-key (kbd "s-/") #'hippie-expand)
-
 ;; Hide minor modes
 (use-package diminish
   :ensure t)
 
-;; theme
-(use-package material-theme
-  :ensure t
-  :config
-  (load-theme 'material t))
-; (load-theme 'wombat)
+;; A package with a great selection of themes:
+;; https://protesilaos.com/emacs/ef-themes
+;; (use-package ef-themes
+;;   :ensure t
+;;   :config
+;;   (ef-themes-select 'ef-autumn))
+(require-theme 'modus-themes)
+(load-theme 'modus-vivendi)
 
 ;; use shift + arrow keys to switch between visible buffers
 (use-package windmove
@@ -236,15 +175,15 @@
   :ensure t
   :bind (("C-c g" . magit-file-dispatch)))
 
-(use-package projectile
-  :ensure t
-  :bind-keymap ("C-c p" . projectile-command-map)
-  :config
-  (projectile-mode +1))
-
 (use-package expand-region
   :ensure t
   :bind ("C-=" . er/expand-region))
+
+(use-package move-text
+  :ensure t
+  :bind
+  (([(meta shift up)] . move-text-up)
+   ([(meta shift down)] . move-text-down)))
 
 (use-package smartparens
   :ensure t
@@ -259,10 +198,55 @@
   :config
   (show-paren-mode +1))
 
+(use-package rainbow-delimiters
+  :ensure t)
+
+(use-package rainbow-mode
+  :ensure t
+  :config
+  (add-hook 'prog-mode-hook #'rainbow-mode))
+
+(use-package whitespace
+  :init
+  (dolist (hook '(prog-mode-hook text-mode-hook))
+    (add-hook hook #'whitespace-mode))
+  (add-hook 'before-save-hook #'whitespace-cleanup)
+  :config
+  (setq whitespace-style '(face tabs empty trailing)))
+
+(use-package anzu
+  :ensure t
+  :bind (("M-%" . anzu-query-replace)
+         ("C-M-%" . anzu-query-replace-regexp))
+  :config
+  (global-anzu-mode))
+
+(use-package multiple-cursors
+  :ensure t
+  :bind (("C-S-c C-S-c" . mc/edit-lines)
+         ("C->" . mc/mark-next-like-this)
+         ("C-<" . mc/mark-previous-like-this)
+         ("C-c C-<" . mc/mark-all-like-this)))
+
+;; hippie expand is dabbrev expand on steroids
+(setq hippie-expand-try-functions-list '(try-expand-dabbrev
+                                         try-expand-dabbrev-all-buffers
+                                         try-expand-dabbrev-from-kill
+                                         try-complete-file-name-partially
+                                         try-complete-file-name
+                                         try-expand-all-abbrevs
+                                         try-expand-list
+                                         try-expand-line
+                                         try-complete-lisp-symbol-partially
+                                         try-complete-lisp-symbol))
+;; use hippie-expand instead of dabbrev
+(global-set-key (kbd "M-/") #'hippie-expand)
+(global-set-key (kbd "s-/") #'hippie-expand)
+
 (use-package evil
   :ensure t
   :init
-  (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
+  (setq evil-want-integration t)
   (setq evil-want-keybinding nil)
   :config
   (evil-mode 1))
@@ -272,13 +256,6 @@
   :ensure t
   :config
   (evil-collection-init))
-
-(use-package multiple-cursors
-  :ensure t
-  :bind (("C-S-c C-S-c" . mc/edit-lines)
-         ("C->" . mc/mark-next-like-this)
-         ("C-<" . mc/mark-previous-like-this)
-         ("C-c C-<" . mc/mark-all-like-this)))
 
 (use-package uniquify
   :config
@@ -325,78 +302,62 @@
   (setq dired-dwim-target t)
 
   ;; enable some really cool extensions like C-x C-j(dired-jump)
-  (require 'dired-x))
+  ;;(require 'dired-x)
+  )
 
 (use-package all-the-icons-dired
   :ensure t
   :hook (dired-mode . all-the-icons-dired-mode))
 
-(use-package anzu
-  :ensure t
-  :bind (("M-%" . anzu-query-replace)
-         ("C-M-%" . anzu-query-replace-regexp))
-  :config
-  (global-anzu-mode))
-
-(use-package move-text
-  :ensure t
-  :bind
-  (([(meta shift up)] . move-text-up)
-   ([(meta shift down)] . move-text-down)))
-
-(use-package rainbow-delimiters
-  :ensure t)
-
-(use-package rainbow-mode
-  :ensure t
-  :config
-  (add-hook 'prog-mode-hook #'rainbow-mode))
-
-(use-package whitespace
-  :init
-  (dolist (hook '(prog-mode-hook text-mode-hook))
-    (add-hook hook #'whitespace-mode))
-  (add-hook 'before-save-hook #'whitespace-cleanup)
-  :config
-  (setq whitespace-style '(face tabs empty trailing)))
-
+;; Better minibuffer completion
 (use-package vertico
   :ensure t
-  :init (vertico-mode)
-
-  ;; Different scroll margin
-  ;; (setq vertico-scroll-margin 0)
-
-  ;; Show more candidates
-  ;; (setq vertico-count 20)
-
-  ;; Grow and shrink the Vertico minibuffer
-  ;; (setq vertico-resize t)
-
-  ;; Optionally enable cycling for `vertico-next' and `vertico-previous'.
-  ;; (setq vertico-cycle t)
-  )
-
-;; Enable rich annotations using the Marginalia package
-(use-package marginalia
-  :ensure t
-  ;; Either bind `marginalia-cycle' globally or only in the minibuffer
-  :bind (("M-A" . marginalia-cycle)
-         :map minibuffer-local-map
-         ("M-A" . marginalia-cycle))
-
-  ;; The :init configuration is always executed (Not lazy!)
+  :custom
+  (vertico-cycle t)
+  (read-buffer-completion-ignore-case t)
+  (read-file-name-completion-ignore-case t)
+  (completion-styles '(basic substring partial-completion flex))
   :init
+  (vertico-mode))
 
-  ;; Must be in the :init section of use-package such that the mode gets
-  ;; enabled right away. Note that this forces loading the package.
-  (marginalia-mode))
+;;; 2023-07-12 Causes problem with vertico--exhibit string-width
+;; ;; Enable rich annotations using the Marginalia package
+;; (use-package marginalia
+;;   ;; Bind `marginalia-cycle' locally in the minibuffer.  To make the binding
+;;   ;; available in the *Completions* buffer, add it to the
+;;   ;; `completion-list-mode-map'.
+;;   :bind (:map minibuffer-local-map
+;;          ("M-A" . marginalia-cycle))
 
-;; Persist history over Emacs restarts. Vertico sorts by history position.
-(use-package savehist
+;;   ;; The :init section is always executed.
+;;   :init
+
+;;   ;; Marginalia must be actived in the :init section of use-package such that
+;;   ;; the mode gets enabled right away. Note that this forces loading the
+;;   ;; package.
+;;   (marginalia-mode));; Show lots of useful stuff in the minibuffer
+;; (use-package marginalia
+;;   :after vertico
+;;   :ensure t
+;;   :init
+;;   (marginalia-mode))
+
+;; https://grtcdr.tn/posts/2023-01-24.html
+;; Adds intellisense-style code completion at point that works great
+;; with LSP via Eglot. You'll likely want to configure this one to
+;; match your editing preferences, there's no one-size-fits-all
+;; solution.
+(use-package corfu
   :ensure t
   :init
-  (savehist-mode))
+  (global-corfu-mode)
+  :custom
+  (corfu-auto t)
+  ;; You may want to play with delay/prefix/styles to suit your preferences.
+  (corfu-auto-delay 0)
+  (corfu-auto-prefix 0)
+  (completion-styles '(basic)))
+
 ;; Example configuration for Consult
 (use-package consult
   :ensure t
@@ -519,16 +480,8 @@
   (completion-styles '(orderless basic))
   (completion-category-overrides '((file (styles basic partial-completion)))))
 
-(use-package smex
-  :ensure t)
-
 (use-package markdown-mode
   :ensure t)
-
-(use-package zop-to-char
-  :ensure t
-  :bind (("M-z" . zop-up-to-char)
-         ("M-Z" . zop-to-char)))
 
 (use-package imenu-anywhere
   :ensure t
@@ -569,47 +522,13 @@
   :config
   (turn-off-auto-fill))
 
-;; lsp & omnisharp
-(defun efs/lsp-mode-setup ()
-  "Customise lsp mode for csharp."
-  (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
-  (lsp-headerline-breadcrumb-mode))
-
-(use-package lsp-mode
-  :ensure t
-  :commands (lsp lsp-deferred)
-  :hook (lsp-mode . efs/lsp-mode-setup)
-  :init
-  (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
+;; https://grtcdr.tn/posts/2023-01-24.html
+(use-package eglot
+  :commands (eglot eglot-ensure)
+  :hook ((csharp-mode . eglot-ensure))
   :config
-  (lsp-enable-which-key-integration t))
-
-(use-package lsp-ui
-  :ensure t
-  :hook (lsp-mode . lsp-ui-mode)
-  :custom
-  (lsp-ui-doc-position 'bottom))
-
-(use-package lsp-treemacs
-  :ensure t
-  :after lsp)
-
-;; (use-package csharp-mode
-;;   :ensure t
-;;   :init (add-hook 'csharp-mode-hook 'lsp-deferred)
-;;   :mode "\\.cs")
-
-(use-package company
-  :ensure t
-  :after lsp-mode
-  :hook (lsp-mode . company-mode)
-  :bind (:map company-active-map
-         ("<tab>" . company-complete-selection))
-        (:map lsp-mode-map
-         ("<tab>" . company-indent-or-complete-common))
-  :custom
-  (company-minimum-prefix-length 1)
-  (company-idle-delay 0.0))
+  (add-to-list 'eglot-server-programs
+             '(csharp-mode . ("csharp-ls"))))
 
 (use-package meson-mode
   :ensure t
@@ -646,17 +565,7 @@
   :ensure t
   :mode "\\.json\\'")
 
-;;; init.el ends here
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(evil-collection all-the-icons zop-to-char yaml-mode which-key use-package smex smartparens rainbow-mode rainbow-delimiters projectile multiple-cursors move-text meson-mode material-theme magit lsp-ui lsp-treemacs lsp-ivy json-mode js2-mode ivy-rich imenu-anywhere ggtags flycheck expand-region evil doom-modeline diminish deadgrep counsel company auto-package-update anzu all-the-icons-dired)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+(use-package cus-edit
+  :ensure nil
+  :config
+  (setq custom-file (concat user-emacs-directory "to-be-dumped.el")))
