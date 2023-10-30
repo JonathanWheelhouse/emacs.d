@@ -52,7 +52,12 @@
           ("https" . "127.0.0.1:8888")))) ; fiddler
 
 ;; Set the font. Note: height = px * 100
-(set-face-attribute 'default nil :font "Consolas" :height 120)
+(cond ((eq system-type 'windows-nt)
+       (set-face-attribute 'default nil :font "Consolas" :height 120)
+       )
+      ((eq system-type 'gnu/linux)
+       (set-face-attribute 'default nil :font "Inconsolata" :height 220)
+       ))
 
 ;; Set up package sources
 (require 'package)
