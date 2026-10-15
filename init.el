@@ -1,4 +1,4 @@
-;;; init.el -- Jono's Emacs configuration
+;;; init.el -- Jono's Emacs configuration  -*- lexical-binding: t; -*-
 
 ;; Copyright (c) 2020 Jonathan Wheelhouse
 
@@ -53,13 +53,6 @@
     (add-to-list 'exec-path git-usr-bin)
     (setenv "PATH"
             (concat git-bin ";" git-usr-bin ";" (getenv "PATH")))))
-
-;; Proxy (cntlm/fiddler)
-(when (eq system-type 'windows-nt)
-  (setq url-proxy-services
-        '(("no_proxy" . "^\\(localhost\\|10.*\\)")
-          ("http" . "127.0.0.1:8888")
-          ("https" . "127.0.0.1:8888"))))
 
 ;; ------------------------------------------------------------
 ;; Fonts
@@ -377,7 +370,9 @@
 (use-package eglot
   :commands (eglot eglot-ensure)
   :hook ((csharp-mode . eglot-ensure)
-         (csharp-ts-mode . eglot-ensure))
+         (csharp-ts-mode . eglot-ensure)
+         (c-mode . eglot-ensure)
+         (c-ts-mode . eglot-ensure)
   :config
   (add-to-list 'eglot-server-programs
                '((csharp-mode csharp-ts-mode) . ("csharp-ls"))))
