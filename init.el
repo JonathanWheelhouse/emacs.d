@@ -189,7 +189,7 @@
 
 (use-package move-text
   :ensure t
-  :bind (([(meta shift up)] . move-text-up)
+  :bind (((meta shift up)] . move-text-up)
          ([(meta shift down)] . move-text-down)))
 
 (use-package smartparens
@@ -372,7 +372,7 @@
   :hook ((csharp-mode . eglot-ensure)
          (csharp-ts-mode . eglot-ensure)
          (c-mode . eglot-ensure)
-         (c-ts-mode . eglot-ensure)
+         (c-ts-mode . eglot-ensure))
   :config
   (add-to-list 'eglot-server-programs
                '((csharp-mode csharp-ts-mode) . ("csharp-ls"))))
@@ -401,16 +401,13 @@
   :ensure t
   :bind ("<f5>" . deadgrep))
 
-(use-package ggtags
-  :ensure t
-  :hook ((c-mode c++-mode java-mode) . ggtags-mode))
-
 ;; Integrated cleanly into Emacs built-in C engine setup
 (use-package cc-mode
   :ensure nil
-  :hook (c-mode . (lambda ()
-                    (c-set-style "linux")
-                    (setq c-basic-offset 4))))
+  :hook ((c-mode c++-mode c-ts-mode c++-ts-mode) .
+         (lambda ()
+           (c-set-style "linux")
+           (setq c-basic-offset 4))))
 
 (use-package imenu-anywhere
   :ensure t
